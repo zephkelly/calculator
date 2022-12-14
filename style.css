@@ -12,27 +12,27 @@ body {
   padding: 1rem;
   background-color: ghostwhite;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  border: 0.2rem solid;
+  border-color: rgb(150, 150, 150);
 }
 
 .display {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
   height: 30%;
   text-align: right;
   background-color: white;
   padding: 0 1rem 0 1rem;
+  border-radius: 1rem;
+  border: 0.2rem solid;
+  border-color: rgb(150, 150, 150);
 }
 
 .display h3 {
   color: rgb(100, 100, 100);
-}
-
-.border {
-  border-radius: 1rem;
-  border: 0.2rem solid;
-  border-color: rgb(150, 150, 150);
 }
 
 .button-grid {
@@ -44,10 +44,28 @@ body {
   padding: 1rem 0 1rem 0;
 }
 
+.btn {
+  border-radius: 0.5rem;
+  border: 0.1rem solid;
+  border-color: rgb(150, 150, 150);
+}
+
 .wideBtn {
   grid-column: span 2;
 }
 
 .regularBtn {
   grid-column: span 1;
+}
+
+.blue {
+  background-color: aquamarine;
+}
+
+.red {
+  background-color: thistle;
+}
+
+.green {
+  background-color: rgb(200, 255, 200);
 }

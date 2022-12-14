@@ -10,33 +10,35 @@
   <body>
     <header></header>
     <main>
-      <div class="calculator border">
-        <div class="display border">
-          <h3 class="current-operation">1 x 3</h3>
-          <h1 class="current-result">0</h1>
+      <div class="calculator">
+        <div class="display">
+          <h3 id="last-operation"></h3>
+          <h1 id="current-operation">0</h1>
         </div>
         <div class="button-grid">
-          <button id="btnClear" class="wideBtn">Clear</button>
-          <button id="btnDelete" class="wideBtn">Delete</button>
+          <button id="btnClear" class="btn btnOperator wideBtn blue">Clear</button>
+          <button id="btnDelete" class="btn btnOperator wideBtn red">Delete</button>
           <button class="btn">7</button>
           <button class="btn">8</button>
           <button class="btn">9</button>
-          <button class="btnOperator">/</button>
+          <button class="btn btnOperator green">/</button>
           <button class="btn">4</button>
           <button class="btn">5</button>
           <button class="btn">6</button>
-          <button class="btnOperator">x</button>
+          <button class="btn btnOperator green">x</button>
           <button class="btn">1</button>
           <button class="btn">2</button>
           <button class="btn">3</button>
-          <button class="btnOperator">-</button>
-          <button class="btnOperator">.</button>
+          <button class="btn btnOperator green">-</button>
+          <button class="btn btnOperator green">.</button>
           <button class="btn">0</button>
-          <button class="btnOperator">=</button>
-          <button class="btnOperator">+</button>
+          <button class="btn btnOperator green">=</button>
+          <button class="btn btnOperator green">+</button>
         </div>
       </div>
     </main>
-    <footer></footer>
+    <footer>
+      <script src="script.js"></script>
+    </footer>
   </body>
 </html>
