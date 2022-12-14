@@ -13,6 +13,7 @@ const periodButton = document.getElementById('btnPeriod')
 
 const currentDisplay = document.getElementById('current-operation')
 const lastOperationDisplay = document.getElementById('last-operation')
+const warningLabel = document.getElementById('warningLabel')
 
 deleteButton.addEventListener('click', () => deleteFromNumber())
 clearButton.addEventListener('click', () => clearCalculator())
@@ -33,8 +34,11 @@ periodButton.addEventListener('click', () => {
 equalsButton.addEventListener('click', () => {
   updateLastInputDisplay()
 
-  if (firstNumber != '' && secondNumber != '') evaluate()
-  
+  if (firstNumber != '' && secondNumber != '') {
+    warningLabel.textContent = ''
+    evaluate()
+  }
+
   firstNumber = ''
   secondNumber = ''
   currentOperand = ''
@@ -111,7 +115,7 @@ function updateLastInputDisplay() {
 }
 
 function evaluate() {
-  if (checkEdgeCases == true) return
+  if (checkEdgeCases() == true) return
 
   if (currentOperand == '+') {
     currentDisplay.textContent = parseFloat(firstNumber) + parseFloat(secondNumber) 
@@ -126,6 +130,8 @@ function evaluate() {
 
 function checkEdgeCases() {
   if (firstNumber == '0' && secondNumber == '0' && currentOperand == "/") {
+    warningLabel.textContent = "Error: You're not allowed to divide zero by itself!"
+    clearCalculator()
     return true
   } else {
     return false
