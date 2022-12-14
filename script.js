@@ -1,6 +1,7 @@
 let firstNumber = ''
 let currentOperand = ''
 let secondNumber = ''
+let usedPeriodInCurrentNumber = false
 let shouldWipeDisplay = false
 
 const numberButtons = document.querySelectorAll('.btn')
@@ -8,6 +9,7 @@ const operandButtons = document.querySelectorAll('.btnOperator')
 const deleteButton = document.getElementById('btnDelete')
 const clearButton = document.getElementById('btnClear')
 const equalsButton = document.getElementById('btnEquals')
+const periodButton = document.getElementById('btnPeriod')
 
 const currentDisplay = document.getElementById('current-operation')
 const lastOperationDisplay = document.getElementById('last-operation')
@@ -15,12 +17,30 @@ const lastOperationDisplay = document.getElementById('last-operation')
 deleteButton.addEventListener('click', () => deleteFromNumber())
 clearButton.addEventListener('click', () => clearCalculator())
 
+periodButton.addEventListener('click', () => {
+  if (usedPeriodInCurrentNumber == true) return
+
+  if (currentOperand != '') {
+    addToNumber('.', 'second')
+    usedPeriodInCurrentNumber = true
+    return
+  }
+
+  addToNumber('.', 'first')
+  usedPeriodInCurrentNumber = true
+})
+
 equalsButton.addEventListener('click', () => {
   updateLastInputDisplay()
 
   if (firstNumber != '' && secondNumber != '') evaluate()
+  
+  firstNumber = ''
   secondNumber = ''
   currentOperand = ''
+
+  shouldWipeDisplay = true
+  usedPeriodInCurrentNumber = false
 })
 
 numberButtons.forEach((numberButton) => {
@@ -32,6 +52,8 @@ numberButtons.forEach((numberButton) => {
 
     if (currentDisplay.textContent == '0' && firstNumber == '') {
       wipeDisplay()
+    } else if (shouldWipeDisplay == true) {
+      wipeDisplay()
     }
 
     addToNumber(numberButton.textContent, 'first')
@@ -40,17 +62,19 @@ numberButtons.forEach((numberButton) => {
 
 operandButtons.forEach((operandButton) => {
   operandButton.addEventListener('click', () => {
-    if (firstNumber == '') return
+    if (currentDisplay.textContent != '') {
+      firstNumber = currentDisplay.textContent
+    }
 
     currentOperand = operandButton.textContent
     updateLastInputDisplay()
+
     shouldWipeDisplay = true
+    usedPeriodInCurrentNumber = false
   })
 })
 
 function addToNumber(value, numberToUpdate) {
-  if (shouldWipeDisplay) wipeDisplay()
-  
   if (numberToUpdate == 'first') {
     if (firstNumber.length >= 11) return
 
@@ -64,8 +88,8 @@ function addToNumber(value, numberToUpdate) {
   }
 }
 
-function deleteFromNumber(numberToUpdate) {
-  if (numberToUpdate == 'first') {
+function deleteFromNumber() {
+  if (secondNumber == '') {
     firstNumber = firstNumber.slice(0, -1)
     currentDisplay.textContent = firstNumber
   } else {
@@ -87,20 +111,31 @@ function updateLastInputDisplay() {
 }
 
 function evaluate() {
-  if (currentOperand == '+') {
-    currentDisplay.textContent = parseInt(firstNumber) + parseInt(secondNumber) 
-  } else if (currentOperand == '-') {
-    currentDisplay.textContent = parseInt(firstNumber) - parseInt(secondNumber)
-  } else if (currentOperand == 'x') {
-    currentDisplay.textContent = parseInt(firstNumber) * parseInt(secondNumber)
-  } else {
-    currentDisplay.textContent = parseInt(firstNumber) / parseInt(secondNumber)
-  }
+  if (checkEdgeCases == true) return
 
-  firstNumber = currentDisplay.textContent
+  if (currentOperand == '+') {
+    currentDisplay.textContent = parseFloat(firstNumber) + parseFloat(secondNumber) 
+  } else if (currentOperand == '-') {
+    currentDisplay.textContent = parseFloat(firstNumber) - parseFloat(secondNumber)
+  } else if (currentOperand == 'x') {
+    currentDisplay.textContent = parseFloat(firstNumber) * parseFloat(secondNumber)
+  } else {
+    currentDisplay.textContent = parseFloat(firstNumber) / parseFloat(secondNumber)
+  }
 }
 
-function wipeDisplay() { currentDisplay.textContent = '' }
+function checkEdgeCases() {
+  if (firstNumber == '0' && secondNumber == '0' && currentOperand == "/") {
+    return true
+  } else {
+    return false
+  }
+}
+
+function wipeDisplay() {
+  currentDisplay.textContent = ''
+  shouldWipeDisplay = false
+}
 
 function clearCalculator() {
   firstNumber = ''
@@ -109,4 +144,7 @@ function clearCalculator() {
 
   currentDisplay.textContent = '0'
   lastOperationDisplay.textContent = ''
+
+  shouldWipeDisplay = false
+  usedPeriodInCurrentNumber = false
 }
