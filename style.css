@@ -1,5 +1,6 @@
 body {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -44,12 +45,6 @@ body {
   padding: 1rem 0 1rem 0;
 }
 
-.btn {
-  border-radius: 0.5rem;
-  border: 0.1rem solid;
-  border-color: rgb(150, 150, 150);
-}
-
 .wideBtn {
   grid-column: span 2;
 }
@@ -60,12 +55,21 @@ body {
 
 .blue {
   background-color: aquamarine;
+  border-radius: 0.5rem;
+  border: 0.1rem solid;
+  border-color: rgb(150, 150, 150);
 }
 
 .red {
   background-color: thistle;
+  border-radius: 0.5rem;
+  border: 0.1rem solid;
+  border-color: rgb(150, 150, 150);
 }
 
 .green {
   background-color: rgb(200, 255, 200);
+  border-radius: 0.5rem;
+  border: 0.1rem solid;
+  border-color: rgb(150, 150, 150);
 }

@@ -1,60 +1,73 @@
 let firstNumber = ''
+let currentOperand = ''
 let secondNumber = ''
-let operand = ''
-let shouldClearScreen = false
 
-const buttons = document.querySelectorAll('.btn')
-const operators = document.querySelectorAll('.btnOperator')
-const lastOperation = document.getElementById('last-operation')
-const currentOperation = document.getElementById('current-operation')
+const numberButtons = document.querySelectorAll('.btn')
+const operandButtons = document.querySelectorAll('.btnOperator')
 
-buttons.forEach((button) => {
-  if(button.classList.contains("btnOperator")) return
+const currentDisplay = document.getElementById("current-operation")
+const deleteButton = document.getElementById("btnDelete")
+const clearButton = document.getElementById("btnClear")
 
-  button.addEventListener('click', () => {
-    if (shouldClearScreen) clearScreen()
-    inputNewNumber(button.textContent)
-  })
-});
+deleteButton.addEventListener('click', () => deleteFromNumber())
+clearButton.addEventListener('click', () => clearCalculator())
 
-operators.forEach((operator) => {
-  operator.addEventListener('click', () => {
-    if (operator.textContent == '=' && firstNumber != '') {
-      secondNumber = currentOperation.textContent
-      currentOperation.textContent = evaluate(parseInt(firstNumber), parseInt(secondNumber))
-
-      lastOperation.textContent = firstNumber + ' ' + operand + ' '  + secondNumber + ' ' + '='
-      shouldClearScreen = true;
-      return
+numberButtons.forEach((numberButton) => {
+  numberButton.addEventListener('click', () => {
+    if (currentOperand == '') {
+      addToNumber(numberButton.textContent, 'second')
     }
 
-    firstNumber = currentOperation.textContent
-    operand = operator.textContent
+    if (currentDisplay.textContent == '0' && firstNumber == '') {
+      wipeDisplay()
+    }
 
-    lastOperation.textContent = currentOperation.textContent + " " + operator.textContent
-    shouldClearScreen = true;
+    addToNumber(numberButton.textContent, 'first')
   })
 })
 
-function inputNewNumber(number) {
-  if (currentOperation.textContent == 0) clearScreen()
+operandButtons.forEach((operandButton) => {
+  operandButton.addEventListener('click', () => {
+    if (firstNumber == '') return
 
-  currentOperation.textContent += number
+    currentOperand = operandButton.textContent
+  })
+})
+
+function addToNumber(value, numberToUpdate) {
+  if (numberToUpdate == 'first') {
+    if (firstNumber.length >= 11) return
+
+    firstNumber += value
+    currentDisplay.textContent = firstNumber
+  } else {
+    if (secondNumber.length >= 11) return
+
+    secondNumber += value
+    currentDisplay.textContent = secondNumber
+  }
 }
 
-function clearScreen() {
-  currentOperation.textContent = ''
-  shouldClearScreen = false
+function deleteFromNumber(numberToUpdate) {
+  if (numberToUpdate == 'first') {
+    firstNumber = firstNumber.slice(0, -1)
+    currentDisplay.textContent = firstNumber
+  } else {
+    secondNumber = secondNumber.slice(0, -1)
+    currentDisplay.textContent = secondNumber
+  }
+
+  if (currentDisplay.textContent == '') {
+    currentDisplay.textContent = '0'
+  }
 }
 
-function resetScreen() {
-  currentOperation.textContent = 0
-}
+function wipeDisplay() { currentDisplay.textContent = '' }
 
-function sendToLastOperation(newOperand) {
-  lastOperation.textContent = newOperand;
-}
+function clearCalculator() {
+  firstNumber = ''
+  currentOperand = ''
+  secondNmber = ''
 
-function evaluate(num1, num2) {
-  return num1 + num2
+  currentDisplay.textContent = '0'
 }
