@@ -1,21 +1,33 @@
 let firstNumber = ''
 let currentOperand = ''
 let secondNumber = ''
+let shouldWipeDisplay = false
 
 const numberButtons = document.querySelectorAll('.btn')
 const operandButtons = document.querySelectorAll('.btnOperator')
+const deleteButton = document.getElementById('btnDelete')
+const clearButton = document.getElementById('btnClear')
+const equalsButton = document.getElementById('btnEquals')
 
-const currentDisplay = document.getElementById("current-operation")
-const deleteButton = document.getElementById("btnDelete")
-const clearButton = document.getElementById("btnClear")
+const currentDisplay = document.getElementById('current-operation')
+const lastOperationDisplay = document.getElementById('last-operation')
 
 deleteButton.addEventListener('click', () => deleteFromNumber())
 clearButton.addEventListener('click', () => clearCalculator())
 
+equalsButton.addEventListener('click', () => {
+  updateLastInputDisplay()
+
+  if (firstNumber != '' && secondNumber != '') evaluate()
+  secondNumber = ''
+  currentOperand = ''
+})
+
 numberButtons.forEach((numberButton) => {
   numberButton.addEventListener('click', () => {
-    if (currentOperand == '') {
+    if (currentOperand != '') {
       addToNumber(numberButton.textContent, 'second')
+      return
     }
 
     if (currentDisplay.textContent == '0' && firstNumber == '') {
@@ -31,10 +43,14 @@ operandButtons.forEach((operandButton) => {
     if (firstNumber == '') return
 
     currentOperand = operandButton.textContent
+    updateLastInputDisplay()
+    shouldWipeDisplay = true
   })
 })
 
 function addToNumber(value, numberToUpdate) {
+  if (shouldWipeDisplay) wipeDisplay()
+  
   if (numberToUpdate == 'first') {
     if (firstNumber.length >= 11) return
 
@@ -62,6 +78,28 @@ function deleteFromNumber(numberToUpdate) {
   }
 }
 
+function updateLastInputDisplay() {
+  if (secondNumber == '') {
+    lastOperationDisplay.textContent = firstNumber + ' ' + currentOperand
+  } else {
+    lastOperationDisplay.textContent = firstNumber + ' ' + currentOperand + ' ' + secondNumber + ' ' + '='
+  }
+}
+
+function evaluate() {
+  if (currentOperand == '+') {
+    currentDisplay.textContent = parseInt(firstNumber) + parseInt(secondNumber) 
+  } else if (currentOperand == '-') {
+    currentDisplay.textContent = parseInt(firstNumber) - parseInt(secondNumber)
+  } else if (currentOperand == 'x') {
+    currentDisplay.textContent = parseInt(firstNumber) * parseInt(secondNumber)
+  } else {
+    currentDisplay.textContent = parseInt(firstNumber) / parseInt(secondNumber)
+  }
+
+  firstNumber = currentDisplay.textContent
+}
+
 function wipeDisplay() { currentDisplay.textContent = '' }
 
 function clearCalculator() {
@@ -70,4 +108,5 @@ function clearCalculator() {
   secondNmber = ''
 
   currentDisplay.textContent = '0'
+  lastOperationDisplay.textContent = ''
 }
